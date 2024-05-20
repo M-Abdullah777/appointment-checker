@@ -1,4 +1,5 @@
 import logging
+import time
 from bs4 import BeautifulSoup
 from seleniumbase import Driver
 from selenium import webdriver
@@ -51,9 +52,19 @@ def check():
         print('ERROR')
         logging.error('An error occurred: %s', e)
         # Handle error as needed
+        return (e, False)
+        
 
     finally:
         driver.quit()
 
 if __name__ == '__main__':
-    check()
+    while True:
+        error, result = check()
+        if error:
+            print(f"An error occurred: {error}")
+        if result:
+            print('ACTIVE')
+        else:
+            print('NOT-ACTIVE')
+        
