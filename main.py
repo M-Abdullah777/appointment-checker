@@ -6,7 +6,7 @@ import mailer
 from bs4 import BeautifulSoup
 
 LAST_EMAIL = datetime.datetime.now()
-email_interval = int(os.environ.get('EMAIL_INTERVAL', '5'))
+email_interval = int(os.environ.get('EMAIL_INTERVAL', '30'))
 data = []
 
 def init_request():
@@ -41,12 +41,11 @@ def take_action():
         LAST_EMAIL = datetime.datetime.now()
 
 def main():
-    i = 1
+    i = 1 
     while True:
         print('Cycle ' + str(i) + ':', datetime.datetime.now())
         init_request()
         take_action()
-        time.sleep(int(os.environ.get('EMAIL_INTERVAL', '0')))
         i += 1
 
 if __name__ == '__main__':

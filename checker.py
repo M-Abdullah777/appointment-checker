@@ -6,10 +6,7 @@ from selenium import webdriver
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.wait import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
-from selenium import webdriver
 from webdriver_manager.chrome import ChromeDriverManager
-from selenium.webdriver.chrome.options import Options
-from selenium import webdriver
 from selenium.webdriver.chrome.options import Options
 
 def check():
@@ -67,4 +64,3 @@ if __name__ == '__main__':
             print('ACTIVE')
         else:
             print('NOT-ACTIVE')
-        
