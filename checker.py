@@ -29,6 +29,7 @@ def check():
                 print("Change Detected: New appointment waiting list for Study visa found.")
                 # Perform any action you want here
                 active = True
+                return (None, True)
                 
 
             else:
