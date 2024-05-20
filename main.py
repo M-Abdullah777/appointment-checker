@@ -3,9 +3,10 @@ import os
 import time
 import checker
 import mailer
+from bs4 import BeautifulSoup
 
 LAST_EMAIL = datetime.datetime.now()
-
+email_interval = int(os.environ.get('EMAIL_INTERVAL', '30'))
 data = []
 
 def init_request():
@@ -31,7 +32,7 @@ def take_action():
             mailer.send_mail('URGENT: Appointment Open!', 'New Appointment: https://service2.diplo.de/rktermin/extern/choose_realmList.do?locationCode=isla&request_locale=en \n Cancel Old Appointment: https://mail.google.com/mail/u/0/#search/diplo.de/FMfcgzGqRZXPdJGVVpMQhfsGWkVbcWxC')
         elif status == 'error':
             mailer.send_mail('ERROR: Something went wrong!', 'Something went wrong on the server. Kindly check!')
-    elif datetime.datetime.now() > LAST_EMAIL + datetime.timedelta(minutes=int(os.environ.get('EMAIL_AFTER_MIN'))):
+    elif datetime.datetime.now() > LAST_EMAIL + datetime.timedelta(minutes=email_interval):
         content_list = []
         for d in data:
             content_list.append(str(d['timestamp']) + ' -> ' + d['status'])
@@ -45,7 +46,7 @@ def main():
         print('Cycle ' + str(i) + ':', datetime.datetime.now())
         init_request()
         take_action()
-        time.sleep(int(os.environ.get('CHECK_AFTER_SEC')))
+        time.sleep(int(os.environ.get('EMAIL_INTERVAL', '30')))
         i += 1
 
 if __name__ == '__main__':

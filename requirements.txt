@@ -2,3 +2,4 @@ selenium
 yagmail
 undetected_chromedriver
 seleniumbase
+BeautifulSoup4

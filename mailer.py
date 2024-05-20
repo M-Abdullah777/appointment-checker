@@ -1,16 +1,18 @@
 import os
 import yagmail
 
-EMAIL=os.environ.get('SENDER_EMAIL')
-PASS=os.environ.get('SENDER_PASS')
+# Example credentials (replace with actual credentials)
+EMAIL = 'tayyabasheikh009@gmail.com'
+PASS = 'gplx qjli gawz tdam'
+TO = 'abdullahjabbar.965@gmail.com','amnakanwal963@gmail.com'
 
 def send_mail(subject, contents):
     yag = yagmail.SMTP(EMAIL, PASS)
     yag.send(
-        to=os.environ.get('RECVR_EMAILS').split(' '),
+        to=TO,
         subject=subject,
         contents=contents,
     )
 
 if __name__ == '__main__':
-    send_mail('hassan.tanveer0097@gmail.com', 'Test Email', 'Test Content')
+    send_mail( 'Test Email', 'Test Content')

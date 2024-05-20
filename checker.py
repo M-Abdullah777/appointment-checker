@@ -1,36 +1,40 @@
-import os
 import logging
-
+from bs4 import BeautifulSoup
 from seleniumbase import Driver
-
 from selenium import webdriver
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.wait import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
+from selenium import webdriver
+from webdriver_manager.chrome import ChromeDriverManager
+from selenium.webdriver.chrome.options import Options
+from selenium import webdriver
+from selenium.webdriver.chrome.options import Options
 
 def check():
-    
-    driver = Driver(uc=True, incognito=True, headless=True)
-
-    driver.get("https://service2.diplo.de/rktermin/extern/appointment_showForm.do?locationCode=isla&realmId=108&categoryId=1600")
+    driver = webdriver.Chrome() 
 
     try:
-        elem_select = WebDriverWait(driver, 10).until(EC.presence_of_element_located((By.XPATH, "/html/body/div[1]/div[2]/div[1]/div[1]/fieldset/form/div[8]/div[2]/select")))
-        print('Select Element Fetched')
+        url = "https://service2.diplo.de/rktermin/extern/choose_categoryList.do?locationCode=isla&realmId=108"
+        driver.get(url)
+        current_html = driver.page_source
 
-        option_elems = elem_select.find_elements(By.TAG_NAME ,"option")
-        print('Options Fetched')
-
-        active = False
-        active_value = ''
-        for opt in option_elems:
-            opt_value = opt.get_attribute("value")
-            if isinstance(opt_value, str) and os.environ.get('KEYWORD') in opt_value.lower():
+        # Check for new appointment waiting lists
+        soup = BeautifulSoup(current_html, 'html.parser')
+        appointment_lists = soup.find_all('div', style='font-size: 14pt; font-weight: bold; margin-bottom: 1em;')
+        for appointment_list in appointment_lists:
+            appointment_text = appointment_list.get_text(strip=True)
+          
+            if 'study visa' in appointment_text:
+                print("Change Detected: New appointment waiting list for Study visa found.")
+                # Perform any action you want here
                 active = True
-                print('Found')
-                # active_value = opt_value
-                break
-            
+                
+
+            else:
+                active = False
+                print("No Change Detected")
+
         if active:
             print('ACTIVE')
             driver.quit()
@@ -40,12 +44,15 @@ def check():
             print('NOT-ACTIVE')
             driver.quit()
             return (None, False)
+              
+
     except Exception as e:
         print('ERROR')
         logging.error('An error occurred: %s', e)
+        # Handle error as needed
+
+    finally:
         driver.quit()
-        print(e)
-        return (e, False)
 
 if __name__ == '__main__':
     check()
