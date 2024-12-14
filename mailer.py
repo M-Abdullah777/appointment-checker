@@ -2,9 +2,9 @@ import os
 import yagmail
 
 # Example credentials (replace with actual credentials)
-EMAIL = 'tayyabasheikh009@gmail.com'
-PASS = 'gplx qjli gawz tdam'
-TO = 'abdullahjabbar.965@gmail.com','amnakanwal963@gmail.com'
+EMAIL = ''
+PASS = ''
+TO = '',''
 
 def send_mail(subject, contents):
     yag = yagmail.SMTP(EMAIL, PASS)
